@@ -1,4 +1,4 @@
-module github.com/tedlilley/cc-bridge
+module github.com/binaryphile/cc-bridge
 
 go 1.24.4
 

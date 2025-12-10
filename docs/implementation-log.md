@@ -15,7 +15,7 @@
 
 **Commit:** Initial Go module setup
 
-- Created `go.mod` with module path `github.com/tedlilley/cc-bridge`
+- Created `go.mod` with module path `github.com/binaryphile/cc-bridge`
 - Established directory structure:
   ```
   cc-bridge/

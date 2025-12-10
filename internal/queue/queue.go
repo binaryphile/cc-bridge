@@ -8,7 +8,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/tedlilley/cc-bridge/internal/schema"
+	"github.com/binaryphile/cc-bridge/internal/schema"
 )
 
 type Queue struct {

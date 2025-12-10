@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tedlilley/cc-bridge/internal/queue"
-	"github.com/tedlilley/cc-bridge/internal/schema"
-	"github.com/tedlilley/cc-bridge/internal/session"
+	"github.com/binaryphile/cc-bridge/internal/queue"
+	"github.com/binaryphile/cc-bridge/internal/schema"
+	"github.com/binaryphile/cc-bridge/internal/session"
 )
 
 // Executor interface for Claude CLI execution (allows mocking)

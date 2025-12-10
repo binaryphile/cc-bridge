@@ -11,10 +11,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/tedlilley/cc-bridge/internal/broker"
-	"github.com/tedlilley/cc-bridge/internal/queue"
-	"github.com/tedlilley/cc-bridge/internal/schema"
-	"github.com/tedlilley/cc-bridge/internal/session"
+	"github.com/binaryphile/cc-bridge/internal/broker"
+	"github.com/binaryphile/cc-bridge/internal/queue"
+	"github.com/binaryphile/cc-bridge/internal/schema"
+	"github.com/binaryphile/cc-bridge/internal/session"
 )
 
 // Command represents a parsed CLI command

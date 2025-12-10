@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tedlilley/cc-bridge/internal/schema"
+	"github.com/binaryphile/cc-bridge/internal/schema"
 )
 
 func TestNewManager(t *testing.T) {

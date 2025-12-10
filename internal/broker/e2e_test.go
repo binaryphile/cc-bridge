@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tedlilley/cc-bridge/internal/queue"
-	"github.com/tedlilley/cc-bridge/internal/schema"
-	"github.com/tedlilley/cc-bridge/internal/session"
+	"github.com/binaryphile/cc-bridge/internal/queue"
+	"github.com/binaryphile/cc-bridge/internal/schema"
+	"github.com/binaryphile/cc-bridge/internal/session"
 )
 
 // TestE2E_TwoAgentConversation tests a full conversation between two agents.
