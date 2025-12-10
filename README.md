@@ -2,9 +2,14 @@
 
 Inter-instance communication channel for Claude Code instances.
 
-## Overview
+## Why?
 
-cc-bridge enables two Claude Code instances to exchange messages at human conversation speed via a turn-based broker with session resume.
+Claude Code runs as an interactive CLI. Testing its behavior programmatically—like verifying session resume preserves context, or observing agent-to-agent interactions—requires infrastructure that doesn't exist out of the box.
+
+cc-bridge provides:
+- **Session management** - Automatic `--resume` handling across turns
+- **Message routing** - Queue-based delivery between named agents
+- **Human injection** - Send messages masquerading as any participant
 
 ## Architecture
 
@@ -25,10 +30,32 @@ cc-bridge enables two Claude Code instances to exchange messages at human conver
   └─────────────┘ └─────────────┘ └─────────────┘
 ```
 
+## Prerequisites
+
+- **Go 1.21+**
+- **Claude CLI** installed and authenticated (`claude --version` should work)
+
 ## Installation
 
 ```bash
 go build -o cc-bridge ./cmd/cc-bridge
+```
+
+## Quick Start
+
+```bash
+# Run the E2E test to see it work (requires claude CLI)
+go test ./internal/broker/... -run TestE2E -v
+```
+
+Expected output:
+```
+=== RUN   TestE2E_TwoAgentConversation
+    Step 1: Sending secret to Agent A
+    Agent A response: STORED
+    Step 2: Asking Agent A to recall the secret
+    Agent A recall response: DELTA-7
+--- PASS: TestE2E_TwoAgentConversation (18.38s)
 ```
 
 ## Usage
@@ -47,24 +74,26 @@ go build -o cc-bridge ./cmd/cc-bridge
 
 ```bash
 # Send message as human to an agent
-./cc-bridge send --to agent-a "Hello, Agent A!"
-./cc-bridge send --to agent-b "Hello, Agent B!"
+./cc-bridge send --to agent-a "Remember the code: DELTA-7"
+# Agent A responds, broker logs response
+
+./cc-bridge send --to agent-a "What was the code?"
+# Agent A: "DELTA-7"
 ```
 
 ### Inject messages (masquerade as another agent)
 
 ```bash
 # Pretend to be Agent A sending to Agent B
-./cc-bridge inject --as agent-a --to agent-b "I am agent-a speaking"
-
-# Pretend to be Agent B sending to Agent A
-./cc-bridge inject --as agent-b --to agent-a "I am agent-b speaking"
+./cc-bridge inject --as agent-a --to agent-b "Hello from A"
+# Agent B receives message appearing to be from Agent A
 ```
 
 ### Check status
 
 ```bash
 ./cc-bridge status
+# Shows active sessions and queue depths
 ```
 
 ## Data Storage
@@ -77,45 +106,21 @@ Default data directory: `~/.cc-bridge`
 ## Testing
 
 ```bash
-# Run all tests (fast, uses mocks)
+# Fast unit tests (mocked, <1s)
 go test ./... -short
 
-# Run with real Claude CLI (slower, requires claude binary)
+# Full suite including E2E (~30s, requires claude CLI)
 go test ./... -v
 
-# Run just e2e tests
+# Just E2E tests
 go test ./internal/broker/... -run TestE2E -v
 ```
 
-## Test Results
+## Documentation
 
-```
-ok  github.com/tedlilley/cc-bridge/cmd/cc-bridge     0.003s
-ok  github.com/tedlilley/cc-bridge/internal/broker   25.314s
-ok  github.com/tedlilley/cc-bridge/internal/queue    0.009s
-ok  github.com/tedlilley/cc-bridge/internal/schema   0.002s
-ok  github.com/tedlilley/cc-bridge/internal/session  0.003s
-```
-
-## E2E Test Evidence
-
-```
-=== RUN   TestE2E_TwoAgentConversation
-    Step 1: Sending secret to Agent A
-    Agent A response: STORED
-    Step 2: Asking Agent A to recall the secret
-    Agent A recall response: DELTA-7
-    Step 3: Testing Agent B independently
-    Agent B response: PONG
-    Agent A session: f3328d74-... (turns: 2)
-    Agent B session: 2c87a5a2-... (turns: 1)
---- PASS: TestE2E_TwoAgentConversation (18.38s)
-
-=== RUN   TestE2E_Injection
-    Injecting message as Agent A to Agent B
-    Agent B response to injected message: RECEIVED FROM A
---- PASS: TestE2E_Injection (6.93s)
-```
+- [`docs/use-cases.md`](docs/use-cases.md) - Problem statement, scenarios, user stories
+- [`docs/design.md`](docs/design.md) - Architecture, research findings, design decisions
+- [`docs/implementation-log.md`](docs/implementation-log.md) - Build history, test counts
 
 ## License
 
