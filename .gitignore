@@ -1,0 +1,10 @@
+# Binary
+/cc-bridge
+/bin/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
