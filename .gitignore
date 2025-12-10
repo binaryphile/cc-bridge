@@ -1,0 +1,9 @@
+# Binary (root level only)
+/cc-bridge
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
